@@ -1,51 +1,11 @@
-import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tv/controller/main_controller.dart';
 import '../common/widgets/stream_container.dart';
-import '../constants/constants.dart';
+import '../services/api_services.dart';
 import '../services/stream_services.dart';
 
 class RoomServiceController extends ChangeNotifier {
-
-//this function is used to book the services
-  Future<void> postService({
-      required hotelId,
-      required roomNo,
-      required serviceId,
-      required serviceType
-  }) async {
-    String url = "${commonUrl}make-order.php";
-    Map<String, dynamic> body = {
-      'h_id': hotelId,
-      'room_no': roomNo,
-      'item_id': serviceId,
-      'service_type': serviceType,
-    };
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        body: body,
-      );
-
-      if (response.statusCode == 200) {
-        if (kDebugMode) {
-          print(response.body);
-        }
-      } else {
-        if (kDebugMode) {
-          print('Failed with status code: ${response.statusCode}');
-        }
-        return;
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error occurred: $e');
-      }
-      return;
-    }
-  }
 
   bool _isAlertBoxOpen = false;
 
@@ -131,7 +91,7 @@ class RoomServiceController extends ChangeNotifier {
             ),
             TextButton(
               onPressed: () {
-                postService(
+                ApiServices.postService(
                     hotelId: hId,
                     roomNo: rNo,
                     serviceId: serviceId,

@@ -7,13 +7,15 @@ import '../../controller/room_service_controller.dart';
 
 class RoomService extends StatelessWidget {
   const RoomService({super.key});
+ static Future<List<Map<String, dynamic>>> getServices=ApiServices.getService();
 
   @override
   Widget build(BuildContext context) {
-    Future<List<Map<String, dynamic>>> getServices=ApiServices.getService();
     Size size = MediaQuery.of(context).size;
+
     final channelProvider=Provider.of<ChannelProvider>(context);
     final mainController = Provider.of<MainController>(context);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       mainController.focusFirstNode();
     });

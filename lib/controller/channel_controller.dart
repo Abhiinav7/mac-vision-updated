@@ -22,23 +22,23 @@ class ChannelProvider with ChangeNotifier {
 
   List<Channel>? channels;
 
-
-  late VlcPlayerController vlcPlayerController;
+  VlcPlayerController? vlcPlayerController;
 
   void playChannel(String videoUrl) {
     vlcPlayerController = VlcPlayerController.network(
       videoUrl,
-      hwAcc: HwAcc.auto,
+      hwAcc: HwAcc.AUTO,
       autoPlay: true,
       autoInitialize: true,
-      allowBackgroundPlayback: false,
+      // allowBackgroundPlayback: false,
       options: VlcPlayerOptions(),
     );
     notifyListeners();
   }
 
-  void disposeVlcPlayer() {
-    vlcPlayerController.dispose();
+  disposeVlcPlayer() async{
+    await vlcPlayerController!.dispose();
+    vlcPlayerController=null;
     notifyListeners();
   }
 

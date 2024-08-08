@@ -1,43 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:video_player/video_player.dart';
+import '../constants/constants.dart';
 import '../screen/Auth/hotel.dart';
 import '../screen/main_screen.dart';
 
 class SplashProvider extends ChangeNotifier{
   bool hotelRegistered = false;
-  late VlcPlayerController vlcController;
+  late VideoPlayerController controller;
 
   SplashProvider() {
-    hotelCheck();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+    ]);
+    checkHotelCred();
     playSplash();
   }
- void playSplash(){
-   vlcController = VlcPlayerController.asset(
-       'assets/splash/intro.mp4',
-       autoPlay: true,
-       hwAcc: HwAcc.auto,
-       autoInitialize: true,
-       options: VlcPlayerOptions()
-   );
- }
+  Future<void> playSplash() async {
+    controller = VideoPlayerController.asset('assets/splash/intro.mp4')
+      ..initialize().then((_) {
+        controller.play();
+        notifyListeners();
+      });
+    controller.addListener(() {
+      if (controller.value.position == controller.value.duration) {
+        navigateToNextPage();
+      }
+    });
+  }
 
-  Future<void> hotelCheck() async {
+  Future<void> checkHotelCred() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     hotelRegistered = preferences.getBool('hotel_registered') ?? false;
     notifyListeners();
   }
 
-  void navigateToNextPage(BuildContext context) {
+  void navigateToNextPage() {
     if (hotelRegistered) {
-      Navigator.pushAndRemoveUntil(
-        context,
+      navigatorKey.currentState?.pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const MainScreen()),
             (e) => false,
       );
     } else {
-      Navigator.pushAndRemoveUntil(
-        context,
+      navigatorKey.currentState?.pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => HotelRegister()),
             (e) => false,
       );
@@ -46,7 +52,7 @@ class SplashProvider extends ChangeNotifier{
 
   @override
   void dispose() {
-    vlcController.dispose();
+    controller.dispose();
     super.dispose();
   }
 }

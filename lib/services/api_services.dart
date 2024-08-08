@@ -6,12 +6,19 @@ import '../constants/constants.dart';
 import '../model/food_menu_model.dart';
 
 class ApiServices {
-  Future<String> getChannelUrl(String hotelId, String roomNo) async {
-    const String url = '${commonUrl}ip_data.php';
-
-    Map<String, String> body = {
+  //this function is used to book the services
+  static Future<void> postService({
+    required hotelId,
+    required roomNo,
+    required serviceId,
+    required serviceType
+  }) async {
+    String url = "${commonUrl}make-order.php";
+    Map<String, dynamic> body = {
       'h_id': hotelId,
       'room_no': roomNo,
+      'item_id': serviceId,
+      'service_type': serviceType,
     };
     try {
       final response = await http.post(
@@ -20,22 +27,23 @@ class ApiServices {
       );
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> parsedJson = jsonDecode(response.body);
-        String channelUrl = parsedJson["data"]["channel_url"].toString();
-        return channelUrl;
+        if (kDebugMode) {
+          print(response.body);
+        }
       } else {
         if (kDebugMode) {
           print('Failed with status code: ${response.statusCode}');
         }
-        return "";
+        return;
       }
     } catch (e) {
       if (kDebugMode) {
         print('Error occurred: $e');
       }
-      return "";
+      return;
     }
   }
+
 
  static Future getPrivateMessages(String hotelId, String roomNo) async {
     const String url = '${commonUrl}view-message.php';
@@ -232,43 +240,6 @@ class ApiServices {
     }
   }
 
-  static Future<void> postFoodOrder({
-      required hotelId,
-      required roomNo,
-      required serviceId,
-      required serviceType,
-      required  quantity}) async {
-    String url = "${commonUrl}make-order.php";
-    Map<String, dynamic> body = {
-      'h_id': hotelId,
-      'room_no': roomNo,
-      'item_id': serviceId,
-      'service_type': serviceType,
-      'qty': quantity,
-    };
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        body: body,
-      );
-
-      if (response.statusCode == 200) {
-        if (kDebugMode) {
-          print(response.body);
-        }
-      } else {
-        if (kDebugMode) {
-          print('Failed with status code: ${response.statusCode}');
-        }
-        return;
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error occurred: $e');
-      }
-      return;
-    }
-  }
 
   static Future<void> postMessages({
     required hotelId,

@@ -24,7 +24,7 @@ class FullScreenVideoPlayer extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height,
                         child: VlcPlayer(
-                          controller: provider.vlcPlayerController,
+                          controller: provider.vlcPlayerController!,
                           aspectRatio: 16 / 9,
                           placeholder: const Center(
                             child: CircularProgressIndicator(),

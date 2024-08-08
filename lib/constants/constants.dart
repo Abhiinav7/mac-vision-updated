@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 const String commonUrl="https://iptv.macvision.global/API/";
 const String getUrl="https://iptv.macvision.global/sub-admin/";
 
@@ -12,3 +14,4 @@ List<String> mess = [
   'Lunch',
   'Dinner',
 ];
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

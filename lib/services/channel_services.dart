@@ -56,31 +56,3 @@ class ChannelServices {
     }
   }
 
-//old function that fetches channels and return to list
-
-  // Future<List<Channel>> fetchM3UFile(String url) async {
-  //   final response = await http.get(Uri.parse(url));
-  //   if (response.statusCode != 200) {
-  //     throw Exception('Failed to load M3U file');
-  //   }
-  //
-  //   final String fileContent = response.body;
-  //   final List<String> lines = fileContent.split('\n');
-  //   final List<Channel> channels = [];
-  //
-  //   String? currentName;
-  //
-  //   for (final line in lines) {
-  //     if (line
-  //         .trim()
-  //         .isEmpty) continue;
-  //     if (line.startsWith('#EXTINF')) {
-  //       currentName = line.split(',')[1].trim();
-  //     } else if (currentName != null) {
-  //       channels.add(Channel(currentName, line.trim()));
-  //       currentName = null;
-  //     }
-  //   }
-  //   return channels;
-  // }
-

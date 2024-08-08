@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tv/controller/channel_controller.dart';
 import 'package:tv/screen/splash/splash.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import 'constants/constants.dart';
 import 'controller/auth_controller.dart';
 import 'controller/hotel_controller.dart';
 import 'controller/main_controller.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SplashProvider()),
       ],
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Macvision',
         theme: ThemeData(
